@@ -20,7 +20,7 @@ export const useMount = (cb: () => void) => {
     }, []);
 };
 
-export const useDebounce = (value: any, delay?: number) => {
+export const useDebounce = <T>(value: T, delay?: number) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
     useEffect(() => {
         // 每次value变化以后，设置一个定时器
