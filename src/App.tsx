@@ -1,8 +1,12 @@
 import "./App.css";
-import { ProjectListScreen } from "project-list";
+import { ProjectListScreen } from "screens/project-list";
+import { LoginScreen } from "screens/login";
 
 function App() {
-    return <ProjectListScreen />;
+    return (
+        // <ProjectListScreen />
+        <LoginScreen />
+    );
 }
 
 export default App;
