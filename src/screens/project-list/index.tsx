@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { List } from "screens/project-list/list";
-import { SearchPanel } from "screens/project-list/search-panel";
+import { List, Project } from "screens/project-list/list";
+import { SearchPanel, User } from "screens/project-list/search-panel";
 import { filterNullValues, useDebounce, useMount } from "utils";
 import { useRequest } from "utils/http";
 
@@ -11,14 +11,14 @@ export const ProjectListScreen = () => {
         personId: "",
     });
     const debouncedParams = useDebounce(params, 200);
-    const [users, setUsers] = useState([]);
-    const [list, setList] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [list, setList] = useState<Project[]>([]);
     const fetchRequest = useRequest();
     useMount(() => {
-        fetchRequest("/users").then(setUsers);
+        fetchRequest<User[]>("/users").then(setUsers);
     });
     useEffect(() => {
-        fetchRequest("/projects", {
+        fetchRequest<Project[]>("/projects", {
             params: filterNullValues(debouncedParams),
         }).then(setList);
     }, [debouncedParams]);

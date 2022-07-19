@@ -1,6 +1,6 @@
 import { User } from "screens/project-list/search-panel";
 
-interface Project {
+export interface Project {
     id: number;
     name: string;
     personId: string;
