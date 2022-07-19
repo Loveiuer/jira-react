@@ -1,12 +1,14 @@
+import { AuthentocatedApp } from "authenticated-app";
+import { useAuth } from "context/auth-context";
+import { UnauthenticatedApp } from "unauthenticated-app";
 import "./App.css";
-// eslint-disable-next-line
-import { ProjectListScreen } from "screens/project-list";
-import { LoginScreen } from "screens/login";
 
 function App() {
+    const { user } = useAuth();
     return (
-        // <ProjectListScreen />
-        <LoginScreen />
+        <div className="App">
+            {user ? <AuthentocatedApp /> : <UnauthenticatedApp />}
+        </div>
     );
 }
 

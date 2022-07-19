@@ -1,11 +1,12 @@
-import { User } from "./search-panel";
+import { User } from "screens/project-list/search-panel";
 
 interface Project {
     id: number;
     name: string;
-    personId: number;
-    created: number;
+    personId: string;
+    pin: boolean;
     organization: string;
+    created: number;
 }
 
 interface ListProps {

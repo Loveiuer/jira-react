@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { List } from "./list";
-import { SearchPanel } from "./search-panel";
+import { List } from "screens/project-list/list";
+import { SearchPanel } from "screens/project-list/search-panel";
 import { filterNullValues, useDebounce, useMount } from "utils";
 
 const apiUrl = process.env.REACT_APP_API_URL;
