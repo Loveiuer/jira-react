@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { List } from "screens/project-list/list";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { filterNullValues, useDebounce, useMount } from "utils";
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import { useRequest } from "utils/http";
 
 export const ProjectListScreen = () => {
     const [params, setParams] = useState({
@@ -14,22 +13,14 @@ export const ProjectListScreen = () => {
     const debouncedParams = useDebounce(params, 200);
     const [users, setUsers] = useState([]);
     const [list, setList] = useState([]);
+    const fetchRequest = useRequest();
     useMount(() => {
-        fetch(`${apiUrl}/users`).then(async (response) => {
-            if (response.ok) {
-                setUsers(await response.json());
-            }
-        });
+        fetchRequest("/users").then(setUsers);
     });
-    const searchParams = new URLSearchParams(filterNullValues(debouncedParams));
     useEffect(() => {
-        fetch(`${apiUrl}/projects?${searchParams.toString()}`).then(
-            async (response) => {
-                if (response.ok) {
-                    setList(await response.json());
-                }
-            }
-        );
+        fetchRequest("/projects", {
+            params: filterNullValues(debouncedParams),
+        }).then(setList);
     }, [debouncedParams]);
     return (
         <div>
