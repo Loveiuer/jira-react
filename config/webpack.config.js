@@ -71,6 +71,23 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+//增加less的全局变量
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
+
+//antd自定义主题配置
+const antdThemeOptions = {
+    // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
+    lessOptions: {
+        modifyVars: {
+            "primary-color": "#2fc1e0",
+            "font-size-base": "16px",
+            // 'link-color': '#1DA57A',
+            "border-radius-base": "2px",
+        },
+        javascriptEnabled: true,
+    },
+};
 
 const hasJsxRuntime = (() => {
     if (process.env.DISABLE_NEW_JSX_TRANSFORM === "true") {
@@ -105,7 +122,7 @@ module.exports = function (webpackEnv) {
     const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
     // common function to get style loaders
-    const getStyleLoaders = (cssOptions, preProcessor) => {
+    const getStyleLoaders = (cssOptions, preProcessor, antThemeOption) => {
         const loaders = [
             isEnvDevelopment && require.resolve("style-loader"),
             isEnvProduction && {
@@ -182,6 +199,7 @@ module.exports = function (webpackEnv) {
                 {
                     loader: require.resolve(preProcessor),
                     options: {
+                        ...antThemeOption,
                         sourceMap: true,
                     },
                 }
@@ -515,6 +533,41 @@ module.exports = function (webpackEnv) {
                                     getLocalIdent: getCSSModuleLocalIdent,
                                 },
                             }),
+                        },
+                        {
+                            test: lessRegex,
+                            exclude: lessModuleRegex,
+                            use: getStyleLoaders(
+                                {
+                                    importLoaders: 3,
+                                    sourceMap: isEnvProduction
+                                        ? shouldUseSourceMap
+                                        : isEnvDevelopment,
+                                    modules: {
+                                        mode: "icss",
+                                    },
+                                },
+                                "less-loader",
+                                antdThemeOptions
+                            ),
+                            sideEffects: true,
+                        },
+                        {
+                            test: lessModuleRegex,
+                            use: getStyleLoaders(
+                                {
+                                    importLoaders: 3,
+                                    sourceMap: isEnvProduction
+                                        ? shouldUseSourceMap
+                                        : isEnvDevelopment,
+                                    modules: {
+                                        mode: "local",
+                                        getLocalIdent: getCSSModuleLocalIdent,
+                                    },
+                                },
+                                "less-loader",
+                                antdThemeOptions
+                            ),
                         },
                         // Opt-in support for SASS (using .scss or .sass extensions).
                         // By default we support SASS Modules with the
