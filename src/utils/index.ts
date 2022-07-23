@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function isNullValues(value: any): boolean {
-    return value === 0 ? false : !value;
+    return value === "" || value === undefined || value === null;
 }
 // 在一个函数里，改变传入的对象本身是不好的
 export function filterNullValues(obj: Record<string, any>) {

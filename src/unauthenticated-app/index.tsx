@@ -1,4 +1,4 @@
-import { Button, Card, Divider } from "antd";
+import { Button, Card, Divider, Typography } from "antd";
 import { useState } from "react";
 import { LoginScreen } from "unauthenticated-app/login";
 import { RegisterScreen } from "unauthenticated-app/register";
@@ -9,19 +9,34 @@ import right from "assets/right.svg";
 
 export const UnauthenticatedApp = () => {
     const [isRegister, setIsRegister] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
     return (
         <Container>
             <Header />
             <BackGround />
             <ShadowCard>
                 <Title>{isRegister ? "请注册" : "请登录"}</Title>
-                {isRegister ? <RegisterScreen /> : <LoginScreen />}
+                <Typography.Text type={"danger"}>
+                    {error ? error.message : null}
+                </Typography.Text>
+                {isRegister ? (
+                    <RegisterScreen setError={setError} />
+                ) : (
+                    <LoginScreen setError={setError} />
+                )}
                 <Divider />
-                <p className="reg" onClick={() => setIsRegister(!isRegister)}>
+                <Button
+                    type={"link"}
+                    className="reg"
+                    onClick={() => {
+                        setIsRegister(!isRegister);
+                        setError(null);
+                    }}
+                >
                     {isRegister
                         ? "已经有账号了？直接登录"
                         : "没有账号？注册新账号"}
-                </p>
+                </Button>
             </ShadowCard>
         </Container>
     );
@@ -41,7 +56,7 @@ const BackGround = styled.div`
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
     background-position: left bottom, right bottom;
     background-size: calc((100vw - 40rem) / 2 - 3.2rem),
         calc((100vw - 40rem) / 2 - 3.2rem), cover;
@@ -63,12 +78,6 @@ const ShadowCard = styled(Card)`
     box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
     text-align: center;
-    .reg {
-        color: #2fc1e0;
-    }
-    .reg:hover {
-        color: #58d7ed;
-    }
 `;
 
 const Container = styled.div`

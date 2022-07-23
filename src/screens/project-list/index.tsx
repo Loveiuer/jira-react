@@ -1,31 +1,46 @@
-import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
+import { useState } from "react";
 
-import { List, Project } from "screens/project-list/list";
-import { SearchPanel, User } from "screens/project-list/search-panel";
-import { filterNullValues, useDebounce, useMount } from "utils";
-import { useRequest } from "utils/http";
+import { List } from "screens/project-list/list";
+import { SearchPanel } from "screens/project-list/search-panel";
+import { useDebounce } from "utils";
+import { Typography } from "antd";
+import { useProjects } from "utils/project";
+import { useUser } from "utils/user";
 
 export const ProjectListScreen = () => {
     const [params, setParams] = useState({
         name: "",
         personId: "",
     });
+
     const debouncedParams = useDebounce(params, 200);
-    const [users, setUsers] = useState<User[]>([]);
-    const [list, setList] = useState<Project[]>([]);
-    const fetchRequest = useRequest();
-    useMount(() => {
-        fetchRequest<User[]>("/users").then(setUsers);
-    });
-    useEffect(() => {
-        fetchRequest<Project[]>("/projects", {
-            params: filterNullValues(debouncedParams),
-        }).then(setList);
-    }, [debouncedParams]);
+    const { isLoading, error, data: list } = useProjects(debouncedParams);
+
+    const { data: users } = useUser();
+
     return (
-        <div>
-            <SearchPanel params={params} users={users} setParams={setParams} />
-            <List list={list} users={users} />
-        </div>
+        <Container>
+            <h1>项目列表</h1>
+            <SearchPanel
+                params={params}
+                users={users || []}
+                setParams={setParams}
+            />
+            {error ? (
+                <Typography.Text type={"danger"}>
+                    {error.message}
+                </Typography.Text>
+            ) : null}
+            <List
+                dataSource={list || []}
+                users={users || []}
+                loading={isLoading}
+            />
+        </Container>
     );
 };
+
+const Container = styled.div`
+    padding: 3.2rem;
+`;

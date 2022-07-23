@@ -1,5 +1,6 @@
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
 import { User } from "screens/project-list/search-panel";
+import dayjs from "dayjs";
 
 export interface Project {
     id: number;
@@ -10,15 +11,15 @@ export interface Project {
     created: number;
 }
 
-interface ListProps {
-    list: Project[];
+interface ListProps extends TableProps<Project> {
     users: User[];
 }
 
-export const List: React.FC<ListProps> = ({ list, users }) => {
+export const List = ({ users, ...props }: ListProps) => {
     return (
         <Table
             pagination={false}
+            rowKey={(record) => record.id}
             columns={[
                 {
                     title: "名称",
@@ -26,8 +27,12 @@ export const List: React.FC<ListProps> = ({ list, users }) => {
                     sorter: (a, b) => a.name.localeCompare(b.name),
                 },
                 {
+                    title: "部门",
+                    dataIndex: "organization",
+                },
+                {
                     title: "负责人",
-                    render(value, project) {
+                    render(_, project) {
                         return (
                             <span>
                                 {users.find(
@@ -37,8 +42,22 @@ export const List: React.FC<ListProps> = ({ list, users }) => {
                         );
                     },
                 },
+                {
+                    title: "创建时间",
+                    render(_, project) {
+                        return (
+                            <span>
+                                {project.created
+                                    ? dayjs(project.created).format(
+                                          "YYYY-MM-DD"
+                                      )
+                                    : "无"}
+                            </span>
+                        );
+                    },
+                },
             ]}
-            dataSource={list}
+            {...props}
         ></Table>
     );
 };
