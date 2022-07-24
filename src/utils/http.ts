@@ -43,6 +43,8 @@ export const request = async <T = any>(
         }
         const responseData = await response.json();
         if (response.ok) {
+            console.log(responseData);
+
             return responseData as T;
         } else {
             return Promise.reject(responseData);

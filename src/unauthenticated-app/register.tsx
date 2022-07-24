@@ -19,6 +19,7 @@ export const RegisterScreen = ({
         password: string;
         cpassword: string;
     }) => {
+        setError(null);
         if (values.password !== cpassword) {
             setError(new Error("两次输入密码不一致"));
         } else {

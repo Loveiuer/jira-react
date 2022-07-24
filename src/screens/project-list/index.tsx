@@ -9,9 +9,12 @@ import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
 
 export const ProjectListScreen = () => {
-    const [params, setParams] = useState({
+    const [params, setParams] = useState<{
+        name: string;
+        personId: number | undefined;
+    }>({
         name: "",
-        personId: "",
+        personId: undefined,
     });
 
     const debouncedParams = useDebounce(params, 200);
