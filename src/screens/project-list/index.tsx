@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { List } from "screens/project-list/list";
 import { SearchPanel } from "screens/project-list/search-panel";
-import { useDebounce } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
@@ -22,6 +22,7 @@ export const ProjectListScreen = () => {
 
     const { data: users } = useUser();
 
+    useDocumentTitle("项目列表", false);
     return (
         <Container>
             <h1>项目列表</h1>
