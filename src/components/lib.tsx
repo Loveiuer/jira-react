@@ -44,6 +44,7 @@ export const FullPageLoading = () => {
     );
 };
 
+// 错误处理组件
 export const FullPageErrorFallback = ({ error }: { error: Error }) => {
     return (
         <FullPage>
