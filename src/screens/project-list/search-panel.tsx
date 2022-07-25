@@ -2,7 +2,7 @@
 import { Form, Input, Select } from "antd";
 
 export interface User {
-    id: number;
+    id: string;
     name: string;
     email: string;
     title: string;
@@ -13,7 +13,7 @@ export interface User {
 interface SearchPanelProps {
     params: {
         name: string;
-        personId: number | undefined;
+        personId: string;
     };
     users: User[];
     setParams: (params: SearchPanelProps["params"]) => void;
@@ -46,9 +46,9 @@ export const SearchPanel = ({ params, users, setParams }: SearchPanelProps) => {
                     }
                     defaultValue={undefined}
                 >
-                    <Select.Option value={0}>负责人</Select.Option>
+                    <Select.Option value={""}>负责人</Select.Option>
                     {users.map((user) => (
-                        <Select.Option value={user.id} key={user.id}>
+                        <Select.Option value={String(user.id)} key={user.id}>
                             {user.name}
                         </Select.Option>
                     ))}

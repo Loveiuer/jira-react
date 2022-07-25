@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
 
 import { List } from "screens/project-list/list";
 import { SearchPanel } from "screens/project-list/search-panel";
@@ -7,15 +6,10 @@ import { useDebounce, useDocumentTitle } from "utils";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
+import { useURLSearchParams } from "utils/url";
 
 export const ProjectListScreen = () => {
-    const [params, setParams] = useState<{
-        name: string;
-        personId: number | undefined;
-    }>({
-        name: "",
-        personId: undefined,
-    });
+    const [params, setParams] = useURLSearchParams(["name", "personId"]);
 
     const debouncedParams = useDebounce(params, 200);
     const { isLoading, error, data: list } = useProjects(debouncedParams);
