@@ -17,3 +17,31 @@ export const useProjects = (params: Partial<Project>) => {
 
     return result;
 };
+
+export const useEditProject = () => {
+    const fetchRequest = useRequest();
+    const { run, ...asyncResult } = useAsync();
+    const mutate = (params: Partial<Project>) => {
+        run(
+            fetchRequest(`/projects/${params.id}`, {
+                data: params,
+                method: "PATCH",
+            })
+        );
+    };
+    return { mutate, ...asyncResult };
+};
+
+export const useAddProject = () => {
+    const fetchRequest = useRequest();
+    const { run, ...asyncResult } = useAsync();
+    const mutate = (params: Partial<Project>) => {
+        run(
+            fetchRequest(`/projects/${params.id}`, {
+                data: params,
+                method: "POST",
+            })
+        );
+    };
+    return { mutate, ...asyncResult };
+};

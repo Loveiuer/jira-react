@@ -28,14 +28,17 @@ export const request = async <T = any>(
         (config.headers as Record<string, string>)["Content-Type"] =
             "application/json";
     if (methodsNoData.includes(config.method!.toUpperCase())) {
-        let searchParams = new URLSearchParams(params);
-        path = path + "?" + searchParams.toString();
+        if (params && Object.keys(params).length) {
+            let searchParams = new URLSearchParams(params);
+            path = path + "?" + searchParams.toString();
+        }
     }
     if (methodsWithData.includes(config.method!.toUpperCase())) {
         config.body = JSON.stringify(data || {});
     }
     try {
         const response = await window.fetch(`${apiUrl}${path}`, config);
+
         if (response.status === 401) {
             await auth.logout();
             window.location.reload();
