@@ -6,11 +6,10 @@ import { useDebounce, useDocumentTitle } from "utils";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
-import { useURLSearchParams } from "utils/url";
+import { useProjectsSearchParams } from "screens/project-list/util";
 
 export const ProjectListScreen = () => {
-    const [params, setParams] = useURLSearchParams(["name", "personId"]);
-
+    const [params, setParams] = useProjectsSearchParams();
     const debouncedParams = useDebounce(params, 200);
     const { isLoading, error, data: list } = useProjects(debouncedParams);
 
