@@ -7,12 +7,12 @@ import { useRequest } from "utils/http";
 export const useProjects = (params: Partial<Project>) => {
     const fetchRequest = useRequest();
     const { run, ...result } = useAsync<Project[]>();
+    const fetchProject = () =>
+        fetchRequest<Project[]>("/projects", {
+            params: filterNullValues(params),
+        });
     useEffect(() => {
-        run(
-            fetchRequest<Project[]>("/projects", {
-                params: filterNullValues(params),
-            })
-        );
+        run(fetchProject(), { retry: fetchProject });
     }, [params]);
 
     return result;
@@ -22,7 +22,7 @@ export const useEditProject = () => {
     const fetchRequest = useRequest();
     const { run, ...asyncResult } = useAsync();
     const mutate = (params: Partial<Project>) => {
-        run(
+        return run(
             fetchRequest(`/projects/${params.id}`, {
                 data: params,
                 method: "PATCH",
@@ -36,7 +36,7 @@ export const useAddProject = () => {
     const fetchRequest = useRequest();
     const { run, ...asyncResult } = useAsync();
     const mutate = (params: Partial<Project>) => {
-        run(
+        return run(
             fetchRequest(`/projects/${params.id}`, {
                 data: params,
                 method: "POST",
