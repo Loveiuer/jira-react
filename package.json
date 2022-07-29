@@ -90,6 +90,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
     "json-server": "^0.17.0",
