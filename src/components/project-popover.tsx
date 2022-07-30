@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Divider, List, Popover, Typography } from "antd";
 import { useProjects } from "utils/project";
-import { ButtonNoPadding } from "components/lib";
+// import { ButtonNoPadding } from "components/lib";
 
 // 鼠标放上去显示  不用点击
 export const ProjectPopover = (props: { createProjectButton: JSX.Element }) => {
@@ -13,7 +13,7 @@ export const ProjectPopover = (props: { createProjectButton: JSX.Element }) => {
             <Typography.Text type={"secondary"}>收藏项目</Typography.Text>
             <List>
                 {pinnedProjects?.map((project) => (
-                    <List.Item>
+                    <List.Item key={project.id}>
                         <List.Item.Meta title={project.name} />
                     </List.Item>
                 ))}
