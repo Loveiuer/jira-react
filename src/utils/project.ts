@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Project } from "screens/project-list/list";
 import { filterNullValues } from "utils";
 import { useAsync } from "utils/use-async";
@@ -7,13 +7,16 @@ import { useRequest } from "utils/http";
 export const useProjects = (params: Partial<Project>) => {
     const fetchRequest = useRequest();
     const { run, ...result } = useAsync<Project[]>();
-    const fetchProject = () =>
-        fetchRequest<Project[]>("/projects", {
-            params: filterNullValues(params),
-        });
+    const fetchProject = useCallback(
+        () =>
+            fetchRequest<Project[]>("/projects", {
+                params: filterNullValues(params),
+            }),
+        [params, fetchRequest]
+    );
     useEffect(() => {
         run(fetchProject(), { retry: fetchProject });
-    }, [params]);
+    }, [params, run, fetchProject]);
 
     return result;
 };

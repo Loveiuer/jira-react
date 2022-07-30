@@ -26,6 +26,7 @@ export function filterNullValues(obj: Record<string, any>) {
 export const useMount = (cb: () => void) => {
     useEffect(() => {
         cb();
+        // eslint-disable-next-line  react-hooks/exhaustive-deps
     }, []);
 };
 
@@ -49,7 +50,7 @@ export const useDocumentTitle = (
     title: string,
     keepOnUnmount: boolean = true
 ) => {
-    let preTitle = useRef(document.title);
+    let preTitle = useRef(document.title).current;
     useEffect(() => {
         document.title = title;
     }, [title]);
@@ -57,10 +58,10 @@ export const useDocumentTitle = (
     useEffect(() => {
         return () => {
             if (!keepOnUnmount) {
-                document.title = preTitle.current;
+                document.title = preTitle;
             }
         };
-    }, [title, keepOnUnmount]);
+    }, [title, keepOnUnmount, preTitle]);
 };
 
 // 重置路由
