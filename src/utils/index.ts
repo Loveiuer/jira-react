@@ -9,7 +9,8 @@ function isNullValues(value: any): boolean {
  * @description: 清除空值 undefined null ''
  * @param {Record<string, any>} obj
  */
-export function filterNullValues(obj: Record<string, any>) {
+export function filterNullValues(obj?: Record<string, any>) {
+    if (!obj) return {};
     let newObj = { ...obj };
     Object.keys(newObj).forEach((key) => {
         if (isNullValues(newObj[key])) {

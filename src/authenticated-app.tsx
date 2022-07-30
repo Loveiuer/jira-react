@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Row } from "components/lib";
+import { ButtonNoPadding, Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
@@ -7,16 +7,33 @@ import { Button, Dropdown, Menu } from "antd";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
+import { useState } from "react";
+import { ProjectModule } from "screens/project-list/project-module";
+import { ProjectPopover } from "components/project-popover";
 
 export const AuthentocatedApp = () => {
+    const [projectModalOpen, setProjectModalOpen] = useState(false);
+
+    const createProjectButton = (
+        <ButtonNoPadding
+            type={"link"}
+            onClick={() => setProjectModalOpen(true)}
+        >
+            创建项目
+        </ButtonNoPadding>
+    );
     return (
         <Container>
-            <PageHeader />
+            <PageHeader createProjectButton={createProjectButton} />
             <Main>
                 <Routes>
                     <Route
                         path="/projects"
-                        element={<ProjectListScreen />}
+                        element={
+                            <ProjectListScreen
+                                createProjectButton={createProjectButton}
+                            />
+                        }
                     ></Route>
                     <Route
                         path="/projects/:projectId/*"
@@ -28,44 +45,60 @@ export const AuthentocatedApp = () => {
                     ></Route>
                 </Routes>
             </Main>
+            <ProjectModule
+                projectModuleOpen={projectModalOpen}
+                onClose={() => setProjectModalOpen(false)}
+            />
         </Container>
     );
 };
 
-const PageHeader = () => {
-    const { logout, user } = useAuth();
+const PageHeader = (props: { createProjectButton: JSX.Element }) => {
     return (
         <Header between={true}>
             <HeadLeft gap={true}>
-                <Button type={"link"} onClick={resetRoute}>
+                <ButtonNoPadding
+                    style={{ padding: 0 }}
+                    type={"link"}
+                    onClick={resetRoute}
+                >
                     <SoftwareLogo width={"18rem"} color={"#2fc1e0"} />
-                </Button>
-                <h2>项目</h2>
-                <h2>用户</h2>
+                </ButtonNoPadding>
+                <ProjectPopover
+                    createProjectButton={props.createProjectButton}
+                />
+                <span>用户</span>
             </HeadLeft>
             <HeadRight>
-                <Dropdown
-                    overlay={
-                        <Menu
-                            items={[
-                                {
-                                    label: (
-                                        <Button type={"link"} onClick={logout}>
-                                            退出登录
-                                        </Button>
-                                    ),
-                                    key: "logout",
-                                },
-                            ]}
-                        />
-                    }
-                >
-                    <Button type={"link"} onClick={(e) => e.preventDefault()}>
-                        Hi,{user?.name}
-                    </Button>
-                </Dropdown>
+                <User />
             </HeadRight>
         </Header>
+    );
+};
+
+const User = () => {
+    const { logout, user } = useAuth();
+    return (
+        <Dropdown
+            overlay={
+                <Menu
+                    items={[
+                        {
+                            label: (
+                                <Button type={"link"} onClick={logout}>
+                                    退出登录
+                                </Button>
+                            ),
+                            key: "logout",
+                        },
+                    ]}
+                />
+            }
+        >
+            <Button type={"link"} onClick={(e) => e.preventDefault()}>
+                Hi,{user?.name}
+            </Button>
+        </Dropdown>
     );
 };
 

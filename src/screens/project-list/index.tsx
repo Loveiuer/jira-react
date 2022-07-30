@@ -3,12 +3,15 @@ import styled from "@emotion/styled";
 import { List } from "screens/project-list/list";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { useDebounce, useDocumentTitle } from "utils";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
 import { useProjectsSearchParams } from "screens/project-list/util";
+import { Row } from "components/lib";
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props: {
+    createProjectButton: JSX.Element;
+}) => {
     const [params, setParams] = useProjectsSearchParams();
     const debouncedParams = useDebounce(params, 200);
     const {
@@ -23,7 +26,11 @@ export const ProjectListScreen = () => {
     useDocumentTitle("项目列表", false);
     return (
         <Container>
-            <h1>项目列表</h1>
+            <Row between={true}>
+                <h1>项目列表</h1>
+                {props.createProjectButton}
+            </Row>
+
             <SearchPanel
                 params={params}
                 users={users || []}
@@ -35,6 +42,7 @@ export const ProjectListScreen = () => {
                 </Typography.Text>
             ) : null}
             <List
+                createProjectButton={props.createProjectButton}
                 dataSource={list || []}
                 users={users || []}
                 loading={isLoading}

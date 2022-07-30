@@ -4,7 +4,7 @@ import { filterNullValues } from "utils";
 import { useAsync } from "utils/use-async";
 import { useRequest } from "utils/http";
 
-export const useProjects = (params: Partial<Project>) => {
+export const useProjects = (params?: Partial<Project>) => {
     const fetchRequest = useRequest();
     const { run, ...result } = useAsync<Project[]>();
     const fetchProject = useCallback(
