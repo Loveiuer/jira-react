@@ -3,15 +3,16 @@ import styled from "@emotion/styled";
 import { List } from "screens/project-list/list";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { useDebounce, useDocumentTitle } from "utils";
-import { Button, Typography } from "antd";
+import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
-import { useProjectsSearchParams } from "screens/project-list/util";
-import { Row } from "components/lib";
+import {
+    useProjectModal,
+    useProjectsSearchParams,
+} from "screens/project-list/util";
+import { ButtonNoPadding, Row } from "components/lib";
 
-export const ProjectListScreen = (props: {
-    createProjectButton: JSX.Element;
-}) => {
+export const ProjectListScreen = () => {
     const [params, setParams] = useProjectsSearchParams();
     const debouncedParams = useDebounce(params, 200);
     const {
@@ -22,13 +23,16 @@ export const ProjectListScreen = (props: {
     } = useProjects(debouncedParams);
 
     const { data: users } = useUser();
+    const { open } = useProjectModal();
 
     useDocumentTitle("项目列表", false);
     return (
         <Container>
             <Row between={true}>
                 <h1>项目列表</h1>
-                {props.createProjectButton}
+                <ButtonNoPadding type={"link"} onClick={open}>
+                    创建项目
+                </ButtonNoPadding>
             </Row>
 
             <SearchPanel
@@ -42,7 +46,6 @@ export const ProjectListScreen = (props: {
                 </Typography.Text>
             ) : null}
             <List
-                createProjectButton={props.createProjectButton}
                 dataSource={list || []}
                 users={users || []}
                 loading={isLoading}

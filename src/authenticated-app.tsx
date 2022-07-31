@@ -7,33 +7,18 @@ import { Button, Dropdown, Menu } from "antd";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import { ProjectModule } from "screens/project-list/project-module";
 import { ProjectPopover } from "components/project-popover";
 
 export const AuthentocatedApp = () => {
-    const [projectModalOpen, setProjectModalOpen] = useState(false);
-
-    const createProjectButton = (
-        <ButtonNoPadding
-            type={"link"}
-            onClick={() => setProjectModalOpen(true)}
-        >
-            创建项目
-        </ButtonNoPadding>
-    );
     return (
         <Container>
-            <PageHeader createProjectButton={createProjectButton} />
+            <PageHeader />
             <Main>
                 <Routes>
                     <Route
                         path="/projects"
-                        element={
-                            <ProjectListScreen
-                                createProjectButton={createProjectButton}
-                            />
-                        }
+                        element={<ProjectListScreen />}
                     ></Route>
                     <Route
                         path="/projects/:projectId/*"
@@ -45,15 +30,12 @@ export const AuthentocatedApp = () => {
                     ></Route>
                 </Routes>
             </Main>
-            <ProjectModule
-                projectModuleOpen={projectModalOpen}
-                onClose={() => setProjectModalOpen(false)}
-            />
+            <ProjectModule />
         </Container>
     );
 };
 
-const PageHeader = (props: { createProjectButton: JSX.Element }) => {
+const PageHeader = () => {
     return (
         <Header between={true}>
             <HeadLeft gap={true}>
@@ -64,9 +46,7 @@ const PageHeader = (props: { createProjectButton: JSX.Element }) => {
                 >
                     <SoftwareLogo width={"18rem"} color={"#2fc1e0"} />
                 </ButtonNoPadding>
-                <ProjectPopover
-                    createProjectButton={props.createProjectButton}
-                />
+                <ProjectPopover />
                 <span>用户</span>
             </HeadLeft>
             <HeadRight>

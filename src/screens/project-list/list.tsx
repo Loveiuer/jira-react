@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useProjectModal } from "screens/project-list/util";
 
 export interface Project {
     id: number;
@@ -18,11 +19,11 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
     users: User[];
     refresh?: () => void;
-    createProjectButton: JSX.Element;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
     const { mutate } = useEditProject();
+    const { open } = useProjectModal();
     return (
         <Table
             pagination={false}
@@ -85,11 +86,21 @@ export const List = ({ users, ...props }: ListProps) => {
                         return (
                             <Dropdown
                                 overlay={
-                                    <Menu>
-                                        <Menu.Item key={"edit"}>
-                                            {props.createProjectButton}
-                                        </Menu.Item>
-                                    </Menu>
+                                    <Menu
+                                        items={[
+                                            {
+                                                label: (
+                                                    <ButtonNoPadding
+                                                        type={"link"}
+                                                        onClick={open}
+                                                    >
+                                                        编辑
+                                                    </ButtonNoPadding>
+                                                ),
+                                                key: "edit",
+                                            },
+                                        ]}
+                                    />
                                 }
                             >
                                 <ButtonNoPadding type={"link"}>
