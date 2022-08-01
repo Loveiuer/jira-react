@@ -14,7 +14,7 @@ export const ProjectModule = () => {
     const useMutateProject = editingProject ? useEditProject : useAddProject;
 
     const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
         mutateAsync({ ...editingProject, ...values }).then(() => {
@@ -43,6 +43,7 @@ export const ProjectModule = () => {
                         <h1>{title}</h1>
                         <ErrorBox error={error} />
                         <Form
+                            form={form}
                             layout={"vertical"}
                             style={{ width: "40rem" }}
                             onFinish={onFinish}

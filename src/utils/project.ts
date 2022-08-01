@@ -1,12 +1,13 @@
 import { Project } from "screens/project-list/list";
 import { useRequest } from "utils/http";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { filterNullValues } from "utils";
 
 export const useProjects = (params?: Partial<Project>) => {
     const fetchRequest = useRequest();
 
     return useQuery<Project[]>(["projects", params], () =>
-        fetchRequest("/projects", { data: params })
+        fetchRequest("/projects", { params: filterNullValues(params) })
     );
 };
 
