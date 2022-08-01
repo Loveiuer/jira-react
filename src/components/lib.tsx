@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, Spin, Typography } from "antd";
 import { DevTools } from "jira-dev-tool";
+import { isError } from "utils/index";
 
 export const Row = styled.div<{
     gap?: number | undefined | boolean;
@@ -45,15 +46,26 @@ export const FullPageLoading = () => {
 };
 
 // 错误处理组件
-export const FullPageErrorFallback = ({ error }: { error: Error }) => {
+export const FullPageErrorFallback = ({ error }: { error: Error | null }) => {
     return (
         <FullPage>
             <DevTools />
-            <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+            <ErrorBox error={error} />
         </FullPage>
     );
 };
 
+// 没有padding的组件
 export const ButtonNoPadding = styled(Button)`
     padding: 0;
 `;
+
+// 类型为Error是才显示
+export const ErrorBox = ({ error }: { error: unknown }) => {
+    if (isError(error)) {
+        return (
+            <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
+        );
+    }
+    return null;
+};

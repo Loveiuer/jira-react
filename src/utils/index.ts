@@ -83,3 +83,8 @@ export const useMountedRef = () => {
 
     return mountedRef;
 };
+
+// 判断是否为error
+export function isError(value: unknown): value is Error {
+    return value instanceof Error;
+}

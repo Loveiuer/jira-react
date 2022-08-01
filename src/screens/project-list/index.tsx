@@ -3,24 +3,18 @@ import styled from "@emotion/styled";
 import { List } from "screens/project-list/list";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { useDebounce, useDocumentTitle } from "utils";
-import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUser } from "utils/user";
 import {
     useProjectModal,
     useProjectsSearchParams,
 } from "screens/project-list/util";
-import { ButtonNoPadding, Row } from "components/lib";
+import { ButtonNoPadding, ErrorBox, Row } from "components/lib";
 
 export const ProjectListScreen = () => {
     const [params, setParams] = useProjectsSearchParams();
     const debouncedParams = useDebounce(params, 200);
-    const {
-        isLoading,
-        error,
-        data: list,
-        retry,
-    } = useProjects(debouncedParams);
+    const { isLoading, error, data: list } = useProjects(debouncedParams);
 
     const { data: users } = useUser();
     const { open } = useProjectModal();
@@ -40,16 +34,11 @@ export const ProjectListScreen = () => {
                 users={users || []}
                 setParams={setParams}
             />
-            {error ? (
-                <Typography.Text type={"danger"}>
-                    {error.message}
-                </Typography.Text>
-            ) : null}
+            <ErrorBox error={error} />
             <List
                 dataSource={list || []}
                 users={users || []}
                 loading={isLoading}
-                refresh={retry}
             />
         </Container>
     );

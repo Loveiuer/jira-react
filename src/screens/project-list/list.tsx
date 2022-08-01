@@ -18,12 +18,12 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
     users: User[];
-    refresh?: () => void;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
     const { mutate } = useEditProject();
-    const { open } = useProjectModal();
+    const { startEdit, open } = useProjectModal();
+    const editProject = (id: number) => () => startEdit(id);
     return (
         <Table
             pagination={false}
@@ -36,9 +36,7 @@ export const List = ({ users, ...props }: ListProps) => {
                             <Pin
                                 checked={project.pin}
                                 onCheckedChange={(pin) => {
-                                    mutate({ id: project.id, pin }).then(
-                                        props.refresh
-                                    );
+                                    mutate({ id: project.id, pin });
                                 }}
                             />
                         );
@@ -92,12 +90,26 @@ export const List = ({ users, ...props }: ListProps) => {
                                                 label: (
                                                     <ButtonNoPadding
                                                         type={"link"}
-                                                        onClick={open}
+                                                        // project.id 后面要改成project.personId
+                                                        onClick={editProject(
+                                                            project.personId
+                                                        )}
                                                     >
                                                         编辑
                                                     </ButtonNoPadding>
                                                 ),
                                                 key: "edit",
+                                            },
+                                            {
+                                                label: (
+                                                    <ButtonNoPadding
+                                                        type={"link"}
+                                                        onClick={open}
+                                                    >
+                                                        删除
+                                                    </ButtonNoPadding>
+                                                ),
+                                                key: "delete",
                                             },
                                         ]}
                                     />
