@@ -18,7 +18,7 @@ interface SearchPanelProps {
     setParams: (params: SearchPanelProps["params"]) => void;
 }
 
-export const SearchPanel = ({ params, users, setParams }: SearchPanelProps) => {
+export const SearchPanel = ({ params, setParams }: SearchPanelProps) => {
     return (
         <Form css={{ marginBottom: "2rem" }} layout={"inline"}>
             <Form.Item>
@@ -45,23 +45,6 @@ export const SearchPanel = ({ params, users, setParams }: SearchPanelProps) => {
                         })
                     }
                 />
-                {/* <Select
-                    value={params.personId}
-                    onChange={(value) =>
-                        setParams({
-                            ...params,
-                            personId: value,
-                        })
-                    }
-                    defaultValue={undefined}
-                >
-                    <Select.Option value={""}>负责人</Select.Option>
-                    {users.map((user) => (
-                        <Select.Option value={String(user.id)} key={user.id}>
-                            {user.name}
-                        </Select.Option>
-                    ))}
-                </Select> */}
             </Form.Item>
         </Form>
     );

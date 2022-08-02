@@ -90,9 +90,8 @@ export const List = ({ users, ...props }: ListProps) => {
                                                 label: (
                                                     <ButtonNoPadding
                                                         type={"link"}
-                                                        // project.id 后面要改成project.personId
                                                         onClick={editProject(
-                                                            project.personId
+                                                            project.id
                                                         )}
                                                     >
                                                         编辑

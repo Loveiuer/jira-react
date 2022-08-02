@@ -21,6 +21,7 @@ export const useEditProject = () => {
                 method: "PATCH",
             }),
         {
+            // 成功的时候刷新列表
             onSuccess: () => queryClient.invalidateQueries("projects"),
         }
     );
@@ -46,6 +47,7 @@ export const useProject = (id: number) => {
     return useQuery<Project>(
         ["project", { id }],
         () => fetchRequest(`/projects/${id}`),
+        // id为undefined时不要请求
         { enabled: Boolean(id) }
     );
 };

@@ -6,7 +6,7 @@ import { useProjectModal } from "screens/project-list/util";
 
 // 鼠标放上去显示  不用点击
 export const ProjectPopover = () => {
-    const { data: project, isLoading } = useProjects();
+    const { data: project } = useProjects();
     const pinnedProjects = project?.filter((project) => project.pin);
     const { open } = useProjectModal();
 
