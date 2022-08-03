@@ -1,7 +1,8 @@
 import { Project } from "screens/project-list/list";
 import { useRequest } from "utils/http";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryKey, useMutation, useQuery } from "react-query";
 import { filterNullValues } from "utils";
+import { useAddConfig, useEditConfig } from "utils/use-optimistic-options";
 
 export const useProjects = (params?: Partial<Project>) => {
     const fetchRequest = useRequest();
@@ -11,34 +12,40 @@ export const useProjects = (params?: Partial<Project>) => {
     );
 };
 
-export const useEditProject = () => {
+export const useEditProject = (queryKey: QueryKey) => {
     const fetchRequest = useRequest();
-    const queryClient = useQueryClient();
+    // const queryKey = ['projects',useProjectsSearchParams()]
     return useMutation(
         (params: Partial<Project>) =>
             fetchRequest(`/projects/${params.id}`, {
                 data: params,
                 method: "PATCH",
             }),
-        {
-            // 成功的时候刷新列表
-            onSuccess: () => queryClient.invalidateQueries("projects"),
-        }
+        useEditConfig(queryKey)
     );
 };
 
-export const useAddProject = () => {
+export const useAddProject = (queryKey: QueryKey) => {
     const fetchRequest = useRequest();
-    const queryClient = useQueryClient();
+
     return useMutation(
         (params: Partial<Project>) =>
             fetchRequest(`/projects`, {
                 data: params,
                 method: "POST",
             }),
-        {
-            onSuccess: () => queryClient.invalidateQueries("projects"),
-        }
+        useAddConfig(queryKey)
+    );
+};
+
+export const useDeleteProject = (queryKey: QueryKey) => {
+    const fetchRequest = useRequest();
+    return useMutation(
+        (id: number) =>
+            fetchRequest(`/projects/${id}`, {
+                method: "DELETE",
+            }),
+        useAddConfig(queryKey)
     );
 };
 
