@@ -1,4 +1,4 @@
-import { User } from "screens/project-list/search-panel";
+import { User } from "types/project";
 import { useMount } from "utils";
 import { useRequest } from "utils/http";
 import { useAsync } from "./use-async";

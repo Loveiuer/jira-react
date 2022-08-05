@@ -28,6 +28,10 @@ export const ProjectModule = () => {
             close();
         });
     };
+    const closeModal = () => {
+        form.resetFields();
+        close();
+    };
 
     const title = editingProject ? "编辑项目" : "创建项目";
 
@@ -39,7 +43,7 @@ export const ProjectModule = () => {
             forceRender={true}
             visible={projectModalOpen}
             width={"100%"}
-            onClose={close}
+            onClose={closeModal}
         >
             <Container>
                 {isLoading ? (
@@ -96,7 +100,7 @@ export const ProjectModule = () => {
                         </Form>
                     </>
                 )}
-                <Button onClick={close}>关闭</Button>
+                <Button onClick={closeModal}>关闭</Button>
             </Container>
         </Drawer>
     );
