@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
 import { useLocation } from "react-router";
-import { useDebounce } from "utils";
 import { useProject } from "utils/project";
 import { useTask } from "utils/task";
 import { useURLSearchParams } from "utils/url";
@@ -39,7 +38,7 @@ export const useTasksSearchParams = () => {
     );
 };
 
-export const useTasksQueryKey = () => ["kanbans", useTasksSearchParams()];
+export const useTasksQueryKey = () => ["tasks", useTasksSearchParams()];
 
 export const useTasksModal = () => {
     const [{ editingTaskId }, setEditingTasId] = useURLSearchParams([
