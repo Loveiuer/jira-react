@@ -1,11 +1,12 @@
 import { Kanban } from "types/kanban";
 import { useTasks } from "utils/task";
 import { useTaskTypes } from "utils/task-type";
-import { useTasksSearchParams } from "./util";
+import { useTasksSearchParams } from "screens/kanban/util";
 import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import styled from "@emotion/styled";
 import { Card } from "antd";
+import { CreateTask } from "screens/kanban/create-task";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
     const { data: taskTtpes } = useTaskTypes();
@@ -33,12 +34,13 @@ export const KanbanCloumn = ({ kanban }: { kanban: Kanban }) => {
                         <TaskTypeIcon id={task.typeId} />
                     </Card>
                 ))}
+                <CreateTask kanbanId={kanban.id} />
             </TasksContainer>
         </Container>
     );
 };
 
-const Container = styled.div`
+export const Container = styled.div`
     min-width: 27rem;
     border-radius: 6px;
     background-color: rgb(244, 245, 247);
