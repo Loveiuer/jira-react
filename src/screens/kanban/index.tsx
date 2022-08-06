@@ -11,7 +11,8 @@ import { SearchPanel } from "screens/kanban/search-panel";
 import { ScreenContainer } from "components/lib";
 import { useTasks } from "utils/task";
 import { Spin } from "antd";
-import { CreateKanban } from "./create-kanban";
+import { CreateKanban } from "screens/kanban/create-kanban";
+import { TaskModal } from "screens/kanban/task-modal";
 
 export const KanbanScreen = () => {
     useDocumentTitle("看板列表");
@@ -35,6 +36,7 @@ export const KanbanScreen = () => {
                     <CreateKanban />
                 </ColumnsContainer>
             )}
+            <TaskModal />
         </ScreenContainer>
     );
 };

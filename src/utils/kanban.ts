@@ -2,7 +2,7 @@ import { QueryKey, useMutation, useQuery } from "react-query";
 import { Kanban } from "types/kanban";
 import { filterNullValues } from "utils";
 import { useRequest } from "utils/http";
-import { useAddConfig } from "utils/use-optimistic-options";
+import { useAddConfig, useDeleteConfig } from "utils/use-optimistic-options";
 
 export const useKanbans = (params?: Partial<Kanban>) => {
     const fetchRequest = useRequest();
@@ -22,5 +22,16 @@ export const useAddKanban = (queryKey: QueryKey) => {
                 method: "POST",
             }),
         useAddConfig(queryKey)
+    );
+};
+
+export const useDeleteKanban = (queryKey: QueryKey) => {
+    const fetchRequest = useRequest();
+    return useMutation(
+        (id: number) =>
+            fetchRequest(`/kanbans/${id}`, {
+                method: "DELETE",
+            }),
+        useDeleteConfig(queryKey)
     );
 };

@@ -2,7 +2,11 @@ import { Project } from "types/project";
 import { useRequest } from "utils/http";
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { filterNullValues } from "utils";
-import { useAddConfig, useEditConfig } from "utils/use-optimistic-options";
+import {
+    useAddConfig,
+    useDeleteConfig,
+    useEditConfig,
+} from "utils/use-optimistic-options";
 
 export const useProjects = (params?: Partial<Project>) => {
     const fetchRequest = useRequest();
@@ -45,7 +49,7 @@ export const useDeleteProject = (queryKey: QueryKey) => {
             fetchRequest(`/projects/${id}`, {
                 method: "DELETE",
             }),
-        useAddConfig(queryKey)
+        useDeleteConfig(queryKey)
     );
 };
 
