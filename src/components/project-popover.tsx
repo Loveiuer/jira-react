@@ -6,7 +6,7 @@ import { useProjectModal } from "screens/project-list/util";
 
 // 鼠标放上去显示  不用点击
 export const ProjectPopover = () => {
-    const { data: project } = useProjects();
+    const { data: project, refetch } = useProjects();
     const pinnedProjects = project?.filter((project) => project.pin);
     const { open } = useProjectModal();
 
@@ -27,7 +27,11 @@ export const ProjectPopover = () => {
         </ContentContainer>
     );
     return (
-        <Popover placement={"bottom"} content={content}>
+        <Popover
+            onVisibleChange={() => refetch()}
+            placement={"bottom"}
+            content={content}
+        >
             <span>项目</span>
         </Popover>
     );
