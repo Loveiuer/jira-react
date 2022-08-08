@@ -9,8 +9,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Epic } from "types/epic";
 import { CreateEpic } from "screens/epic/create-epic";
+import { useDocumentTitle } from "utils";
 
 export const EpicScreen = () => {
+    useDocumentTitle("任务组");
     const { data: currentProject } = useProjectInUrl();
     const { data: epics } = useEpics(useEpicSearchParams());
     const { data: tasks } = useTasks({ projectId: currentProject?.id });
